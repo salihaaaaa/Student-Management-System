@@ -1,0 +1,58 @@
+﻿@model StudentResponse
+
+@{
+    ViewBag.Title = "Delete Student";
+}
+
+<a asp-controller="Students" asp-action="Index" class="link-hover">Back to Students List</a>
+<h2>Edit Student</h2>
+<h3>Are you sure to delete?</h3>
+
+<div class="w-50 mt">
+    <form asp-controller="Students" asp-action="Delete" method="post">
+
+        <input type="hidden" asp-for="StudentID" />
+
+        @* StudentName *@
+        <div class="flex">
+            <div class="w-25">
+                <label asp-for="StudentName" class="form-label">Student Name</label>
+            </div>
+            <div class="flex-1">
+                <input asp-for="StudentName" class="form-input" disabled />
+            </div>
+        </div>
+
+        @* StudentEmail *@
+        <div class="flex">
+            <div class="w-25">
+                <label asp-for="StudentEmail" class="form-label">Email</label>
+            </div>
+            <div class="flex-1">
+                <input asp-for="StudentEmail" class="form-input" disabled/>
+            </div>
+        </div>
+
+        @* Submit *@
+        <div class="flex">
+            <div class="w-25">
+            </div>
+            <div class="flex-1">
+                <button class="button button-red-back">Delete</button>
+
+                @if (ViewBag.Errors != null)
+                {
+                    <div class="text-red ml">
+                        <ul>
+                            @foreach (string error in ViewBag.Errors)
+                            {
+                                    <li class="ml">@error</li>
+                            }
+                        </ul>
+                    </div>
+                }
+            </div>
+        </div>
+    </form>
+</div>
+

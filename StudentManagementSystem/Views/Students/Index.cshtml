@@ -1,0 +1,97 @@
+﻿@model IEnumerable<StudentResponse>
+
+@{
+    ViewBag.Title = "Students";
+}
+<form asp-controller="Students" asp-action="Index" method="get">
+    <h1>Students</h1>
+    <a asp-controller="Students" asp-action="Create">Create Student</a>
+    <a asp-controller="Students" asp-action="StudentsPDF">Download as PDF</a>
+
+    <div class="box flex">
+        <div class="flex-1">
+            <select class="form-input" name="searchBy">
+                @foreach (var field in ViewBag.SearchFields)
+                {
+                    if (field.Key == ViewBag.CurrentSearchBy)
+                    {
+                        <option value="@field.Key" selected="selected">@field.Value</option>
+                    }
+                    else
+                    {
+                        <option value="@field.Key">@field.Value</option>
+                    } 
+                }
+            </select>
+        </div>
+        <div class="flex-1">
+            <input type="search" id="Search" class="form-input" placeholder="Search" name="searchString" value="@ViewBag.CurrentSearchString"/>
+        </div>
+        <div class="flex-1">
+            <button class="button button-blue-back">Search</button>
+            <a asp-controller="Students" asp-action="Index" class="link-hover">Clear all</a>
+        </div>
+    </div>
+
+    <table class="table w-100 mt">
+        <thead>
+            <tr>
+                @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData) {
+                    { "ColumnName", nameof(StudentResponse.StudentName) },
+                    { "DisplayName", "Student Name" },
+                })
+
+                @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData) {
+                    { "ColumnName", nameof(StudentResponse.StudentEmail) },
+                    { "DisplayName", "Email" },
+                })
+
+                @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData) {
+                { "ColumnName", nameof(StudentResponse.Course) },
+                { "DisplayName", "Course" },
+                })
+
+                @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData) {
+                    { "ColumnName", nameof(StudentResponse.DateOfBirth) },
+                    { "DisplayName", "Date of Birth" },
+                })
+
+                @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData) {
+                { "ColumnName", nameof(StudentResponse.Age) },
+                { "DisplayName", "Age" },
+                })
+
+                @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData) {
+                    { "ColumnName", nameof(StudentResponse.Address) },
+                    { "DisplayName", "Address" },
+                })
+
+                @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData) {
+                    { "ColumnName", nameof(StudentResponse.Gender) },
+                    { "DisplayName", "Gender" },
+                })
+
+                <th>Action</th>
+              
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (StudentResponse student in Model)
+            {
+                <tr>
+                    <td style="width:12%">@student.StudentName</td>
+                    <td style="width:20%">@student.StudentEmail</td>
+                    <td style="width:18%">@student.Course</td>
+                    <td style="width:11%">@student.DateOfBirth?.ToString("dd MMM yyyy")</td>
+                    <td style="width:6%">@student.Age</td>
+                    <td style="width:19%">@student.Address</td>
+                    <td style="width:7%">@student.Gender</td>
+                    <td style="width:20%">
+                        <a asp-controller="Students" asp-action="Edit" asp-route-studentID="@student.StudentID">Edit</a>
+                        <a asp-controller="Students" asp-action="Delete" asp-route-studentID="@student.StudentID">Delete</a>
+                   </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</form>
